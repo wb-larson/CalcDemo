@@ -27,8 +27,43 @@ public class CalculatorController {
                 // CalculateListener class.
 		
 		this.theView.addCalculateListener(new CalculateListener());
+                this.theView.addProductListener(new ProductListener());
 	}
-	
+	class ProductListener implements ActionListener {
+
+                @Override
+		public void actionPerformed(ActionEvent e) {
+			
+                    int firstFactor = 0;
+                    int secondFactor = 0;
+			
+                    // Surround interactions with the view with
+                    // a try-catch block to handle user entry errors like
+                    // the numbers were not properly entered.
+			
+                    try {
+			
+                        firstFactor = theView.getFirstFactor();
+                        secondFactor = theView.getSecondFactor();
+				
+                        theModel.multiplyTwoNumbers(firstFactor, secondFactor);
+			
+                        theView.setCalcProduct(theModel.getProductValue());			
+                    }
+                    catch (NumberFormatException ex) {
+			// Provide an error message to the console output.	
+                        System.out.println(ex);				
+                        theView.displayErrorMessage(
+                            "Error: The numbers entered must be integers.");				
+                    }
+                    catch (Exception ex) {
+                        System.out.println(ex);				
+                        theView.displayErrorMessage(
+                            "Error: Generic error " + ex.getMessage());				                       
+                    }
+		}		
+	}	
+
 	class CalculateListener implements ActionListener {
 
                 @Override
@@ -44,9 +79,9 @@ public class CalculatorController {
                     try {
 			
                         firstNumber = theView.getFirstNumber();
-                        secondNumber = theView.getFirstNumber();
+                        secondNumber = theView.getSecondNumber();
 				
-                        theModel.addTwoNumbers(firstNumber, firstNumber);
+                        theModel.addTwoNumbers(firstNumber, secondNumber);
 			
                         theView.setCalcSolution(theModel.getCalculationValue());			
                     }
